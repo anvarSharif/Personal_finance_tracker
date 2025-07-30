@@ -9,7 +9,6 @@ import com.example.personal_finance_tracker.repo.UserEntityRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +33,6 @@ public class AuthService {
     public AuthResponseDTO handleLogin(LoginDTO loginDTO) {
         var authenticationToken=new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword());
         Authentication authenticate = authenticationManager.authenticate(authenticationToken);
-        UserEntity user = (UserEntity) authenticate.getPrincipal();
         return new AuthResponseDTO(tokenService.generateToken((UserEntity) authenticate.getPrincipal()));
     }
 

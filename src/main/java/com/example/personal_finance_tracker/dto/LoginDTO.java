@@ -1,9 +1,12 @@
 package com.example.personal_finance_tracker.dto;
 
-import lombok.Value;
+import lombok.*;
 
-@Value
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class LoginDTO {
-    String username;
-    String password;
+   private String username;
+   private String password;
 }

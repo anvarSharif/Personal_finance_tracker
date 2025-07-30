@@ -42,20 +42,15 @@ public class SummaryExportService {
 
     public InputStreamResource exportExel(String month, Long userId) {
         try (Workbook workbook = new XSSFWorkbook()) {
-
             List<TransactionEntity> transactions = getUserTransactionsForMonth(userId,month);
-
             Sheet sheet = workbook.createSheet("Transactions");
-
             Row header = sheet.createRow(0);
             String[] columns = {"Sana", "Kategoriya", "Turi", "Miqdor", "Tavsif"};
             for (int i = 0; i < columns.length; i++) {
                 header.createCell(i).setCellValue(columns[i]);
             }
-
             int rowIdx = 1;
             BigDecimal total = BigDecimal.ZERO;
-
             for (TransactionEntity tx : transactions) {
                 Row row = sheet.createRow(rowIdx++);
                 row.createCell(0).setCellValue(tx.getTransactionDate().toString());
@@ -63,7 +58,6 @@ public class SummaryExportService {
                 row.createCell(2).setCellValue(tx.getType().name());
                 row.createCell(3).setCellValue(tx.getAmount().doubleValue());
                 row.createCell(4).setCellValue(tx.getDescription());
-
                 total = total.add(tx.getAmount());
             }
 
@@ -78,9 +72,7 @@ public class SummaryExportService {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             workbook.write(out);
             ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(out.toByteArray());
-
             return new InputStreamResource(byteArrayInputStream);
-
         } catch (IOException e) {
             throw new RuntimeException("Excel fayl yaratishda xatolik", e);
         }
@@ -90,7 +82,6 @@ public class SummaryExportService {
         List<TransactionEntity> transactions = getUserTransactionsForMonth(userId,month);
         Document document = new Document(PageSize.A4);
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-
         try {
             PdfWriter.getInstance(document, out);
             document.open();
@@ -131,19 +122,14 @@ public class SummaryExportService {
             empty.setColspan(3);
             empty.setBorder(Rectangle.NO_BORDER);
             table.addCell(empty);
-
             table.addCell(new Phrase("Umumiy:", headFont));
             table.addCell(new Phrase(total.toString(), headFont));
-
             document.add(table);
             document.close();
         } catch (DocumentException e) {
             throw new RuntimeException("PDF yaratishda xatolik", e);
         }
-
-
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(out.toByteArray());
-
         return new InputStreamResource(byteArrayInputStream);
     }
 }
