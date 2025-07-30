@@ -1,7 +1,6 @@
 package com.example.personal_finance_tracker.security;
 
 
-
 import com.example.personal_finance_tracker.repo.UserEntityRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -16,7 +15,6 @@ public class CustomUserDetailService implements UserDetailsService {
     public CustomUserDetailService(UserEntityRepository userRepository) {
         this.userRepository = userRepository;
     }
-
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

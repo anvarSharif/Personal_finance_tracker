@@ -5,7 +5,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -18,6 +17,7 @@ import java.util.List;
 public class MyFilter extends OncePerRequestFilter {
     private final TokenService tokenService;
     private final CustomUserDetailService customUserDetailService;
+
     public MyFilter(TokenService tokenService,
                     CustomUserDetailService customUserDetailService) {
         this.tokenService = tokenService;
@@ -31,9 +31,9 @@ public class MyFilter extends OncePerRequestFilter {
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             token = authHeader.substring(7);
         }
-        if (token != null) {
+        if (!token.isEmpty()) {
             if (tokenService.validate(token)) {
-               final String username = tokenService.getUserName(token);
+                final String username = tokenService.getUserName(token);
                 UserDetails userDetails = customUserDetailService.loadUserByUsername(username);
                 final var auth = new UsernamePasswordAuthenticationToken(
                         userDetails,

@@ -17,7 +17,6 @@ services:
     networks:
       - app-network
 
-  # PostgreSQL Database Service
   postgres:
     image: postgres
     environment:

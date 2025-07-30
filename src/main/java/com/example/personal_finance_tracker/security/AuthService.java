@@ -1,5 +1,6 @@
 package com.example.personal_finance_tracker.security;
 
+import com.example.personal_finance_tracker.constants.ReportMessages;
 import com.example.personal_finance_tracker.dto.AuthResponseDTO;
 import com.example.personal_finance_tracker.dto.LoginDTO;
 import com.example.personal_finance_tracker.dto.RegisterDTO;
@@ -31,7 +32,7 @@ public class AuthService {
     }
 
     public AuthResponseDTO handleLogin(LoginDTO loginDTO) {
-        var authenticationToken=new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword());
+        var authenticationToken = new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword());
         Authentication authenticate = authenticationManager.authenticate(authenticationToken);
         return new AuthResponseDTO(tokenService.generateToken((UserEntity) authenticate.getPrincipal()));
     }
@@ -39,7 +40,7 @@ public class AuthService {
     public RegisterResponseDTO saveUser(RegisterDTO registerDTO) {
         Optional<UserEntity> optionalUser = userEntityRepository.findByEmail(registerDTO.getEmail());
         if (optionalUser.isPresent()) {
-            throw new RuntimeException("Email already exists");
+            throw new RuntimeException(ReportMessages.ERROR_EMAIL_EXISTS);
         }
         UserEntity userEntity = UserEntity.builder()
                 .email(registerDTO.getEmail())

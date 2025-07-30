@@ -19,19 +19,19 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
     private final MyFilter myFilter;
 
-    public SecurityConfig( MyFilter myFilter) {
+    public SecurityConfig(MyFilter myFilter) {
         this.myFilter = myFilter;
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http,CustomUserDetailService customUserDetailService) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, CustomUserDetailService customUserDetailService) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable);
         http.cors(AbstractHttpConfigurer::disable);
 
         http.authorizeHttpRequests(req ->
                 req
-                        .requestMatchers(HttpMethod.OPTIONS,"/**").permitAll()
-                        .requestMatchers("/api/users/login","/api/users/register",
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        .requestMatchers("/api/users/login", "/api/users/register",
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",
                                 "/swagger-ui.html").permitAll()
@@ -42,20 +42,22 @@ public class SecurityConfig {
 
         return http.build();
     }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
     @Bean
-    public AuthenticationProvider authenticationProvider(CustomUserDetailService customUserDetailService){
-        var daoAuthenticationProvider=new DaoAuthenticationProvider(passwordEncoder());
+    public AuthenticationProvider authenticationProvider(CustomUserDetailService customUserDetailService) {
+        var daoAuthenticationProvider = new DaoAuthenticationProvider(passwordEncoder());
         daoAuthenticationProvider.setUserDetailsService(customUserDetailService);
         return daoAuthenticationProvider;
     }
+
     @Bean
-    public AuthenticationManager authenticationManager(CustomUserDetailService customUserDetailService){
-        return new ProviderManager(authenticationProvider(customUserDetailService ));
+    public AuthenticationManager authenticationManager(CustomUserDetailService customUserDetailService) {
+        return new ProviderManager(authenticationProvider(customUserDetailService));
     }
 
 }

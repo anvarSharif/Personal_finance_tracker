@@ -39,14 +39,13 @@ public class TransactionsService {
         YearMonth yearMonth = YearMonth.parse(month);
         LocalDate start = yearMonth.atDay(1);
         LocalDate end = yearMonth.atEndOfMonth();
-        List<TransactionEntity> transactionEntityList = transactionEntityRepository.findByUserIdAndTransactionDateBetween(currentUser.getId(),start,end);
+        List<TransactionEntity> transactionEntityList = transactionEntityRepository.findByUserIdAndTransactionDateBetween(currentUser.getId(), start, end);
         List<TransactionResponseDTO> transactionDTOList = new ArrayList<>();
         for (TransactionEntity transactionEntity : transactionEntityList) {
             transactionDTOList.add(toTransactionResponseDTO(transactionEntity));
         }
         return transactionDTOList;
     }
-
 
 
     private TransactionResponseDTO toTransactionResponseDTO(TransactionEntity transaction) {

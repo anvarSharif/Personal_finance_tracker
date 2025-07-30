@@ -21,12 +21,13 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public HttpEntity<?> login(@RequestBody LoginDTO loginDTO){
-       return ResponseEntity.ok(authService.handleLogin(loginDTO));
+    public HttpEntity<?> login(@RequestBody LoginDTO loginDTO) {
+        return ResponseEntity.ok(authService.handleLogin(loginDTO));
     }
+
     @PostMapping("/register")
-    public HttpEntity<?> register(@RequestBody RegisterDTO registerDTO){
-       return ResponseEntity.ok(authService.saveUser(registerDTO));
+    public HttpEntity<?> register(@RequestBody RegisterDTO registerDTO) {
+        return ResponseEntity.ok(authService.saveUser(registerDTO));
     }
 
 }
